@@ -1,31 +1,26 @@
-async function sendUrlToServer(url) {
-    const apiUrl = 'http://localhost:5001/content'; // Assuming your server is running on port 5001
-    const requestData = {
-        url: url
-    };
+import gensim
+from gensim.models import Word2Vec
 
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestData)
-    };
+# Sample sentences
+sentences = [
+    ['this', 'is', 'a', 'sample', 'sentence'],
+    ['gensim', 'is', 'a', 'great', 'library', 'for', 'topic', 'modeling'],
+    ['we', 'are', 'testing', 'if', 'gensim', 'is', 'installed', 'properly'],
+    ['word2vec', 'is', 'a', 'popular', 'algorithm', 'for', 'word', 'embeddings']
+]
 
-    try {
-        const response = await fetch(apiUrl, requestOptions);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const responseData = await response.text();
-        console.log('Server response:', responseData);
-        // Handle the response data here
-    } catch (error) {
-        console.error('Error sending URL to server:', error);
-        // Handle error here
-    }
-}
+# Train a Word2Vec model
+model = Word2Vec(sentences, vector_size=100, window=5, min_count=1, workers=4)
 
-// Example usage:
-const urlToSend = 'https://www.nasa.gov/humans-in-space/'; // Replace with the URL you want to send
-sendUrlToServer(urlToSend);
+# Save the model
+model.save("test_word2vec.model")
+
+# Load the model
+model = Word2Vec.load("test_word2vec.model")
+
+# Check the model by finding the most similar words
+similar_words = model.wv.most_similar('gensim', topn=5)
+print("Most similar words to 'gensim':")
+for word, similarity in similar_words:
+    print(f"{word}: {similarity:.4f}")
+
