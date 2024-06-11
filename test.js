@@ -1,26 +1,35 @@
-import gensim
-from gensim.models import Word2Vec
+body {
+    font-family: Arial, sans-serif;
+}
 
-# Sample sentences
-sentences = [
-    ['this', 'is', 'a', 'sample', 'sentence'],
-    ['gensim', 'is', 'a', 'great', 'library', 'for', 'topic', 'modeling'],
-    ['we', 'are', 'testing', 'if', 'gensim', 'is', 'installed', 'properly'],
-    ['word2vec', 'is', 'a', 'popular', 'algorithm', 'for', 'word', 'embeddings']
-]
+.tooltip-button {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+}
 
-# Train a Word2Vec model
-model = Word2Vec(sentences, vector_size=100, window=5, min_count=1, workers=4)
+.tooltip-text {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the button */
+    left: 50%;
+    margin-left: -80px; /* Use half of the tooltip width to center it */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
 
-# Save the model
-model.save("test_word2vec.model")
-
-# Load the model
-model = Word2Vec.load("test_word2vec.model")
-
-# Check the model by finding the most similar words
-similar_words = model.wv.most_similar('gensim', topn=5)
-print("Most similar words to 'gensim':")
-for word, similarity in similar_words:
-    print(f"{word}: {similarity:.4f}")
-
+.tooltip-button:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
